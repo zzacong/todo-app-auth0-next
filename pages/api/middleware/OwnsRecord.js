@@ -1,5 +1,5 @@
 import auth0 from '../utils/auth0'
-import { table } from '../utils/Airtable'
+import { table } from '../utils/airtable'
 
 const ownsRecord = handler =>
   auth0.requireAuthentication(async (req, res) => {
