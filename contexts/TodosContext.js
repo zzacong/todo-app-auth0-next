@@ -17,7 +17,9 @@ const TodosProvider = ({ children }) => {
 
   const addTodo = async description => {
     try {
-      const { data } = await axios.post('/api/addTodo', { description })
+      const { data: newTodo } = await axios.post('/api/createTodo', {
+        description,
+      })
       setTodos(prevTodos => [newTodo, ...prevTodos])
     } catch (error) {
       console.error(error)
