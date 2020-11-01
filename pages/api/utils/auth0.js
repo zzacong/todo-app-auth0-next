@@ -2,8 +2,8 @@ import { initAuth0 } from '@auth0/nextjs-auth0'
 
 const baseUri =
   process.env.NODE_ENV === 'development'
-    ? 'https://todo-app-next-jamstack.vercel.app'
-    : 'http://localhost:3000'
+    ? 'http://localhost:3000'
+    : 'https://todo-app-next-jamstack.vercel.app'
 
 export default initAuth0({
   domain: process.env.AUTH0_DOMAIN,
