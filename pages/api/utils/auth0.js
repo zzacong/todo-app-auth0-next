@@ -1,12 +1,17 @@
 import { initAuth0 } from '@auth0/nextjs-auth0'
 
+const baseUri =
+  process.env.NODE_ENV === 'development'
+    ? 'https://todo-app-next-jamstack.vercel.app'
+    : 'http://localhost:3000'
+
 export default initAuth0({
   domain: process.env.AUTH0_DOMAIN,
   clientId: process.env.AUTH0_CLIENT_ID,
   clientSecret: process.env.AUTH0_SECRET,
   scope: 'openid profile',
-  redirectUri: 'http://localhost:3000/api/callback',
-  postLogoutRedirectUri: 'http://localhost:3000/',
+  redirectUri: `${baseUri}/api/callback`,
+  postLogoutRedirectUri: `${baseUri}/`,
   session: {
     // The secret used to encrypt the cookie.
     cookieSecret: process.env.COOKIE_SECRET,
