@@ -18,7 +18,7 @@ export default function Home({ initialTodos, user }) {
   return (
     <div>
       <Head>
-        <title>Authenticated Todo App</title>
+        <title>Authenticated Todo App | Next</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar user={user} />
