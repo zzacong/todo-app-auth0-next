@@ -1,4 +1,4 @@
-import '../styles/index.css'
+import '../styles/tailwind.css'
 import { TodosProvider } from '../contexts/TodosContext'
 
 function MyApp({ Component, pageProps }) {
