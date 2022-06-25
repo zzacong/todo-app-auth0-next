@@ -1,9 +1,10 @@
+import { withApiAuthRequired, getSession } from '@auth0/nextjs-auth0'
 import { table } from './utils/airtable'
-import auth0 from './utils/auth0'
 
-export default auth0.requireAuthentication(async (req, res) => {
+export default withApiAuthRequired(async (req, res) => {
   const { description } = req.body
-  const { user } = await auth0.getSession(req)
+  const { user } = getSession(req, res)
+
   try {
     const createdRecords = await table.create([
       { fields: { description, userId: user.sub } },
@@ -12,11 +13,9 @@ export default auth0.requireAuthentication(async (req, res) => {
       id: createdRecords[0].id,
       fields: createdRecords[0].fields,
     }
-    res.statusCode = 201
-    res.json(createdRecord)
+    res.status(201).json(createdRecord)
   } catch (error) {
     console.error(error)
-    res.statusCode = 500
-    res.json({ msg: 'Something went wrong.' })
+    res.status(500).json({ msg: 'Something went wrong.' })
   }
 })

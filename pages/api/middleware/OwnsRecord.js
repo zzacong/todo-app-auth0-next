@@ -1,9 +1,9 @@
-import auth0 from '../utils/auth0'
+import { withApiAuthRequired, getSession } from '@auth0/nextjs-auth0'
 import { table } from '../utils/airtable'
 
-const ownsRecord = handler =>
-  auth0.requireAuthentication(async (req, res) => {
-    const { user } = await auth0.getSession(req)
+export const ownsRecord = handler =>
+  withApiAuthRequired(async (req, res) => {
+    const { user } = getSession(req, res)
     const { id } = req.body
 
     try {
@@ -20,5 +20,3 @@ const ownsRecord = handler =>
       return res.json({ msg: 'Something went wrong' })
     }
   })
-
-export default ownsRecord

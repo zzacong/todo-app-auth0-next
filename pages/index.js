@@ -1,19 +1,20 @@
 import Head from 'next/head'
 import { useEffect, useContext } from 'react'
+import { getSession, useUser } from '@auth0/nextjs-auth0'
 
-import auth0 from './api/utils/auth0'
 import Navbar from '../components/Navbar'
 import Todo from '../components/Todo'
 import { table, minifyRecords } from './api/utils/airtable'
 import { TodosContext } from '../contexts/TodosContext'
 import TodoForm from '../components/TodoForm'
 
-export default function Home({ initialTodos, user }) {
+export default function Home({ initialTodos }) {
   const { todos, setTodos } = useContext(TodosContext)
+  const { user } = useUser()
 
   useEffect(() => {
     setTodos(initialTodos)
-  }, [])
+  }, [initialTodos, setTodos])
 
   return (
     <div>
@@ -21,7 +22,7 @@ export default function Home({ initialTodos, user }) {
         <title>Authenticated Todo App | Next</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Navbar user={user} />
+      <Navbar />
       <main>
         {user ? (
           <>
@@ -32,7 +33,7 @@ export default function Home({ initialTodos, user }) {
             </ul>
           </>
         ) : (
-          <p className="bg-yellow-200 text-yellow-800 rounded-lg mt-5 py-4 px-6">
+          <p className="bg-yellow-100 text-gray-800 rounded-lg mt-5 py-4 px-6">
             You need to log in.
           </p>
         )}
@@ -41,9 +42,10 @@ export default function Home({ initialTodos, user }) {
   )
 }
 
-export async function getServerSideProps(context) {
-  const session = await auth0.getSession(context.req)
+export async function getServerSideProps(ctx) {
+  const session = getSession(ctx.req, ctx.res)
   let todos = []
+
   try {
     if (session?.user) {
       todos = await table
@@ -53,7 +55,6 @@ export async function getServerSideProps(context) {
     return {
       props: {
         initialTodos: minifyRecords(todos),
-        user: session?.user || null,
       },
     }
   } catch (error) {
