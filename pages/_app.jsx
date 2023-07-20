@@ -1,15 +1,16 @@
-import '../styles/tailwind.css'
-import { UserProvider } from '@auth0/nextjs-auth0'
-import { TodosProvider } from '../contexts/TodosContext'
+import '~/styles/tailwind.css'
+
+import { UserProvider } from '@auth0/nextjs-auth0/client'
+import { SWRConfig } from 'swr'
 
 function MyApp({ Component, pageProps }) {
   return (
     <UserProvider>
-      <TodosProvider>
+      <SWRConfig value={{ fallback: pageProps.fallback }}>
         <div className="container mx-auto my-10 max-w-xl">
           <Component {...pageProps} />
         </div>
-      </TodosProvider>
+      </SWRConfig>
     </UserProvider>
   )
 }

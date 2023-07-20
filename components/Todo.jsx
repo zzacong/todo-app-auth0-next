@@ -1,8 +1,7 @@
-import { useContext } from 'react'
-import { TodosContext } from '../contexts/TodosContext'
+import { useTodos } from '~/lib/useTodos'
 
 const Todo = ({ todo }) => {
-  const { updateTodo, deleteTodo } = useContext(TodosContext)
+  const { updateTodo, deleteTodo } = useTodos()
   const { description, completed } = todo.fields
 
   const handleToggle = () => {

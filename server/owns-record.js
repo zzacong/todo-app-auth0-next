@@ -1,13 +1,13 @@
 import { withApiAuthRequired, getSession } from '@auth0/nextjs-auth0'
-import { table } from '../utils/airtable'
+import { table } from '~/server/airtable'
 
 export const ownsRecord = handler =>
   withApiAuthRequired(async (req, res) => {
-    const { user } = getSession(req, res)
-    const { id } = req.body
+    const { user } = await getSession(req, res)
+    const courseId = req.query.courseId
 
     try {
-      const existingRecord = await table.find(id)
+      const existingRecord = await table.find(courseId)
       if (!existingRecord || user.sub !== existingRecord.fields.userId) {
         res.statusCode = 404
         return res.json({ msg: 'Record not found' })
